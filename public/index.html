@@ -1,0 +1,177 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>PDF to Word Converter</title>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+</head>
+<body>
+  <div class="container">
+    <h1>PDF to Word Converter</h1>
+    <div class="form-group">
+      <label for="pdfFile">Select PDF File:</label>
+      <div class="file-input">
+        <span class="file-name">Choose a file</span>
+        <input type="file" id="pdfFile" accept=".pdf" onchange="handleFileSelect(event)">
+      </div>
+    </div>
+    <div class="form-group">
+      <button class="convert-btn" onclick="convertToWord()">Convert to Word</button>
+    </div>
+    <div id="message" class="message"></div>
+  </div>
+
+  <script>
+    let selectedFile;
+
+    function handleFileSelect(event) {
+      selectedFile = event.target.files[0];
+      var fileName = selectedFile.name;
+      var fileSize = selectedFile.size;
+      document.getElementById("message").innerHTML = `Selected file: ${fileName} (${fileSize} bytes)`;
+    }
+
+    function convertToWord() {
+  if (!selectedFile) {
+    showMessage("Please select a PDF file.", "red");
+    return;
+  }
+
+  var formData = new FormData();
+  formData.append("pdfFile", selectedFile);
+
+  fetch("/convert", {
+    method: "POST",
+    body: formData
+  })
+    .then(response => response.blob())
+    .then(blob => {
+      // Create a temporary URL for the blob object
+      var url = window.URL.createObjectURL(blob);
+
+      // Create a link element and set its attributes
+      var link = document.createElement("a");
+      link.href = url;
+      link.download = "converted.docx";
+
+      // Programmatically click the link to trigger the download
+      link.click();
+
+      // Clean up the temporary URL
+      window.URL.revokeObjectURL(url);
+
+      showMessage("Conversion successful.", "green");
+    })
+    .catch(error => {
+      showMessage("An error occurred during conversion.", "red");
+      console.error(error);
+    });
+}
+
+  </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PDF to Word Converter</title>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="script.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>PDF to Word Converter</h1>
+    <div class="form-group">
+      <label for="pdfFile">Select PDF File:</label>
+      <div class="file-input">
+        <span class="file-name">Choose a file</span>
+        <input type="file" id="pdfFile" accept=".pdf" onchange="handleFileSelect(event)">
+      </div>
+    </div>
+    <div class="form-group">
+      <button class="convert-btn" onclick="convertToWord()">Convert to Word</button>
+    </div>
+    <div id="message" class="message"></div>
+  </div>
+
+  <script>
+    let selectedFile;
+
+    function handleFileSelect(event) {
+      selectedFile = event.target.files[0];
+      var fileName = selectedFile.name;
+      var fileSize = selectedFile.size;
+      document.getElementById("message").innerHTML = `Selected file: ${fileName} (${fileSize} bytes)`;
+    }
+
+    function convertToWord() {
+  if (!selectedFile) {
+    showMessage("Please select a PDF file.", "red");
+    return;
+  }
+  var fileReader = new FileReader();
+      fileReader.onload = function(event) {
+        var arrayBuffer = event.target.result;
+        var pdfData = new Uint8Array(arrayBuffer);
+
+        pdf2docx(pdfData)
+          .then(docxBuffer => {
+            var blob = new Blob([docxBuffer], { type: "application/octet-stream" });
+            saveAs(blob, "converted.docx");
+            showMessage("Conversion successful.", "green");
+          })
+          .catch(error => {
+            showMessage("An error occurred during conversion.", "red");
+            console.error(error);
+          });
+      };
+
+      fileReader.readAsArrayBuffer(selectedFile);
+
+  var formData = new FormData();
+  formData.append("pdfFile", selectedFile);
+
+  fetch("/convert", {
+    method: "POST",
+    body: formData
+  })
+    .then(response => response.blob())
+    .then(blob => {
+      // Create a temporary URL for the blob object
+      var url = window.URL.createObjectURL(blob);
+
+      // Create a link element and set its attributes
+      var link = document.createElement("a");
+      link.href = url;
+      link.download = "converted.docx";
+
+      // Programmatically click the link to trigger the download
+      link.click();
+
+      // Clean up the temporary URL
+      window.URL.revokeObjectURL(url);
+
+      showMessage("Conversion successful.", "green");
+    })
+    .catch(error => {
+      showMessage("An error occurred during conversion.", "red");
+      console.error(error);
+    });
+}
+
+    function showMessage(message, color) {
+      var messageElement = document.getElementById("message");
+      messageElement.textContent = message;
+      messageElement.style.color = color;
+    }
+  </script>
+</body>
+</html>
+
+

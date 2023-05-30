@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+
+  .container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: bold;
+  }
+
+  .form-group input[type="file"] {
+    display: none;
+  }
+
+  .form-group .file-input {
+    background-color: #f0f0f0;
+    border-radius: 3px;
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .form-group .file-name {
+    color: #666;
+    font-size: 14px;
+  }
+
+  .form-group .convert-btn {
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  .form-group .convert-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  .message {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+  }
