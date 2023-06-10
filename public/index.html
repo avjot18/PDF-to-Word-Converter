@@ -115,7 +115,7 @@
     showMessage("Please select a PDF file.", "red");
     return;
   }
-  var fileReader = new FileReader();
+  var fileReader = new FileReader();git remote add origin git@github.com:avjot18/PDF-to-Word-Converter.git
       fileReader.onload = function(event) {
         var arrayBuffer = event.target.result;
         var pdfData = new Uint8Array(arrayBuffer);
